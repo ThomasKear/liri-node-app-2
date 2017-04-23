@@ -2,6 +2,7 @@
 var spotDebug = false;
 var twittDebug = false;
 var movieDebug = false;
+var randomDebug = true;
 // vars for twitter API
 var Twitter = require('twitter');
 var twittKeys = require("./keys.js");
@@ -14,6 +15,9 @@ var request = require('request');
 // vars for reading users 
 var liriCommand = process.argv[2];
 var nodeArg = process.argv;
+
+var fs = require("fs");
+
 var searchTitle = "";
 // loppoing through to ensure we capture the entire entry field
 for (var i = 3; i < nodeArg.length; i++) {
@@ -24,7 +28,6 @@ for (var i = 3; i < nodeArg.length; i++) {
     }
 }
 
-console.log("searchTitle: " +  searchTitle);
 
 // this dicates what function goes to what command the user entered
 switch (liriCommand) {
@@ -85,8 +88,7 @@ function myPlayList() {
 
         }
     });
-
-};
+}
 
 
 function myMovie() {
@@ -107,7 +109,6 @@ function myMovie() {
         if (!error && response.statusCode === 200) {
 
             // Parse the body of the site and recover just the imdbRating
-            // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
             console.log("Movie Title: " + JSON.parse(body).Title);
             console.log("Release Year: " + JSON.parse(body).Year);
             console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
@@ -121,6 +122,39 @@ function myMovie() {
     });
 }
 
+function randomPick() {
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        randomPrint(error);
+        // We will then print the contents of data
+        randomPrint(data);
+        // Then split it by commas (to make it more readable)
+        var dataArr = data.split(",");
+        // We will then re-display the content as an array for later use.
+        randomPrint(dataArr[1]);
+        var randomTitle = dataArr[1];
+        randomPrint(randomTitle);
+        spotify.search({ type: 'track', query: randomTitle }, function(err, data) {
+        if (err) {
+            spotPrint('Error occurred: ' + err);
+            return;
+        }
+        // spotPrint(data);
+        // Handle Data
+        var albumTrack = data.tracks.items;
+        // spotPrint('albumTrack: ' + albumTrack)
+        for (i = 0; i < albumTrack.length; i++) {
+            console.log("Artist: " + albumTrack[i].artists[i].name);
+            console.log("Album Title: " + albumTrack[i].album.name);
+            console.log("Spotify Link: " + albumTrack[i].preview_url);
+            console.log("Track Title: " + albumTrack[i].name);
+
+        }
+    });
+    })
+}
+
+
+// console.log("searchTitle: " +  searchTitle);
 
 // debugPrint only prints when var globaDebug * is set to true. Useful for printing backend logic information when debugging. @param {string} the message you wish to print
 function twittPrint(msg) {
@@ -137,6 +171,12 @@ function spotPrint(msg) {
 
 function moviePrint(msg) {
     if (movieDebug == true) {
+        console.log(msg)
+    }
+}
+
+function randomPrint(msg) {
+    if (randomDebug == true) {
         console.log(msg)
     }
 }
