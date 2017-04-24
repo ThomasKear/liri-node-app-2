@@ -1,5 +1,5 @@
 // I built different console.log catergories to focus the information being relayed
-var spotDebug = false;
+var spotDebug = true;
 var twittDebug = false;
 var movieDebug = false;
 var randomDebug = true;
@@ -12,7 +12,7 @@ var params = { q: 'kearnage1975', count: 20 };
 var spotify = require('spotify');
 // var for function request for the OMDB API
 var request = require('request');
-// vars for reading users 
+// vars for reading users commands
 var liriCommand = process.argv[2];
 var nodeArg = process.argv;
 
@@ -80,8 +80,8 @@ function myPlayList() {
         // Handle Data
         var albumTrack = data.tracks.items;
         // spotPrint('albumTrack: ' + albumTrack)
-        for (i = 0; i < albumTrack.length; i++) {
-            console.log("Artist: " + albumTrack[i].artists[i].name);
+        for (i = 5; i < albumTrack.length; i++) {
+            console.log("Artist: " + albumTrack[i].artists[0].name);
             console.log("Album Title: " + albumTrack[i].album.name);
             console.log("Spotify Link: " + albumTrack[i].preview_url);
             console.log("Track Title: " + albumTrack[i].name);
