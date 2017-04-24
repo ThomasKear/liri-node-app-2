@@ -28,6 +28,12 @@ for (var i = 3; i < nodeArg.length; i++) {
     }
 }
 
+fs.appendFile('log.txt', nodeArg, function(err) {
+	if (err) {
+		console.log(err)
+	}
+});
+
 
 // this dicates what function goes to what command the user entered
 switch (liriCommand) {
@@ -80,7 +86,7 @@ function myPlayList() {
         // Handle Data
         var albumTrack = data.tracks.items;
         // spotPrint('albumTrack: ' + albumTrack)
-        for (i = 5; i < albumTrack.length; i++) {
+        for (var i = 0; i < albumTrack.length; i++) {
             console.log("Artist: " + albumTrack[i].artists[0].name);
             console.log("Album Title: " + albumTrack[i].album.name);
             console.log("Spotify Link: " + albumTrack[i].preview_url);
@@ -97,7 +103,7 @@ function myMovie() {
         searchTitle = 'Mr. Nobody';
     }
 
-    var omdbUrl = "http://www.omdbapi.com/?t=" + searchTitle + "&y=&plot=short&r=json";
+    var omdbUrl = "http://www.omdbapi.com/?t=" + searchTitle + "&y=&plot=short&r=json$tomatoes=true";
 
     moviePrint(omdbUrl);
 
@@ -116,7 +122,7 @@ function myMovie() {
             console.log("Movie Language: " + JSON.parse(body).Language);
             console.log("Movie Plot: " + JSON.parse(body).Plot);
             console.log("Movie Actor: " + JSON.parse(body).Actors);
-            console.log("Rotten Tomatoes URL: " + rotTomaUrl);
+            console.log("Rotten Tomatoes URL: " + rotTomaUrl;
         }
 
     });
@@ -143,7 +149,7 @@ function randomPick() {
         var albumTrack = data.tracks.items;
         // spotPrint('albumTrack: ' + albumTrack)
         for (i = 0; i < albumTrack.length; i++) {
-            console.log("Artist: " + albumTrack[i].artists[i].name);
+            console.log("Artist: " + albumTrack[i].artists[0].name);
             console.log("Album Title: " + albumTrack[i].album.name);
             console.log("Spotify Link: " + albumTrack[i].preview_url);
             console.log("Track Title: " + albumTrack[i].name);
